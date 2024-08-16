@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.3.0/fonts/remixicon.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="/styles/card.css">
+    <link rel="stylesheet" href="/styles/selected_card.css">
+    <link rel="stylesheet" href="/styles/tool_bar.css">
+    <link rel="stylesheet" href="/styles/filter_box.css">
+    <title>Books</title>
+</head>
+<body>
+    <%- include('./partials/filterBox.ejs') %>
+
+    <div class="tool-bar">
+        <div class="tools">
+            <a href="/"><i class="ri-home-3-line"></i></a>
+            <a href="/new" ><i class="ri-add-box-line"></i></a>
+            <i class="ri-filter-line" onclick="openPopUp()"></i>
+            <i class="ri-edit-line" onclick="handler('Edit')"></i>
+            <i class="ri-delete-bin-2-line" onclick="handler('Delete')"></i>
+        </div>
+
+        <i class="ri-arrow-right-wide-fill"></i>
+    </div>
+
+    <% books.forEach((book) => { %>
+        <div class="card <%= book.book_code %>">
+            <div class="card-header">
+                <div>
+                    <h1 class="title"><%= book.title %></h1>
+                </div>
+                <hr>
+            </div>
+            
+            <div class="card-body">
+                <img src="https://covers.openlibrary.org/b/<%= key %>/<%= book.book_code %>-<%= size %>.jpg" alt="Book Cover">
+                <p><%= book.review %></p>
+            </div>
+        </div>
+    <% }) %>
+
+    <button hidden>Submit</button>
+
+    <script>
+        function handler (feature) {
+            const btn = document.querySelector('body > button');
+
+            switch (feature) {
+                case 'Edit':
+                    editBook();
+                    btnHandler('Edit')
+                    break;
+                case 'Delete':
+                    deleteBook();
+                    btnHandler('Delete');
+                    btn
+                    break;
+            }
+        }
+
+        function editBook () {
+            const cards = document.querySelectorAll('.card');
+
+            cards.forEach((card) => {
+                card.addEventListener('click', () => {
+                    cards.forEach((card) => {
+                        card.classList.remove('selected')
+                    })
+
+                    card.classList.toggle('selected')
+                })
+            })
+        }
+
+        function deleteBook () {
+            const cards = document.querySelectorAll('.card');
+
+            cards.forEach((card) => {
+                card.addEventListener('click', () => {
+                    card.classList.toggle('selected');
+                })
+            })
+        }
+
+        function sendData (url) {
+            const bookCodes = [];
+            const selectedBooks = document.querySelectorAll('.selected');
+
+            selectedBooks.forEach((book) => {
+                const bookCode = book.classList[1];
+                bookCodes.push(bookCode);
+            })
+
+            const data = { bookCodes }
+            const options = {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json', 
+                },
+                body: JSON.stringify(data)
+            }
+            fetch(url, options)
+                .then(response => response.text()) // Get the HTML content as a string
+                .then(html => {
+                    document.open();  // Open the document for writing
+                    document.write(html);  // Replace the current document with the new HTML
+                    document.close();  // Close the document
+                })
+                .catch(error => console.error('Error:', error));       
+        }
+
+        function btnHandler (text) {
+            const url = `/${text.toLowerCase()}`; 
+            const btn = document.querySelector('body > button');
+
+            console.log(btn, url);
+
+            btn.innerHTML = text;
+            btn.setAttribute('onclick', `sendData('${url}')`)
+            btn.removeAttribute('hidden');
+        }
+
+        function openPopUp () {
+            const popUp = document.querySelector('.filter-box');
+            popUp.removeAttribute('hidden');
+        }
+
+        function closePopUp () {
+            const popUp = document.querySelector('.filter-box');
+            popUp.setAttribute('hidden', true);
+        }
+    </script>
+</body>
+</html>

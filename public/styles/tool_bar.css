@@ -1,0 +1,44 @@
+.tool-bar {
+    position: fixed;
+    left: -60px;
+    top: 40%;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.8rem;
+
+    transition: left 0.3s ease-in-out 0s;
+}
+
+.tool-bar:hover {
+    left: -10px;
+}
+
+.tool-bar > i {
+    font-size: 1.5rem;
+}
+
+.tools {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+
+    border: 1px solid black;
+    border-radius: 0.3rem;
+    padding: 1rem;
+}
+
+a {
+    color: black;
+    text-decoration: none;
+}
+
+i:hover {
+    cursor: pointer;
+}
+
+button {
+    background: transparent;
+    border: none;
+}

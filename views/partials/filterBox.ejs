@@ -1,0 +1,38 @@
+<div class="filter-box" hidden>
+    <div class="overlay"></div>
+
+    <form class="filter-container" action="/filter" method="post">
+        <i class="ri-close-line" onclick="closePopUp()"></i>
+        <select name="filter" id="" class="filter" onchange="changeValues(this)">
+            <option value="" disabled selected>Select your filter</option>
+            <% filters.forEach((filter) => {%>
+                <option value="<%= filter %>"><%= filter %></option>
+            <% }) %>
+        </select>
+        
+        <select name="value" id="" class="values">
+            <option value="" disabled selected>Select your option</option>
+    
+            <% books.forEach((book) => { %>
+                <option value="<%= book.author %>" hidden="false" class="author option"><%= book.author %></option>
+                <option value="<%= book.score %>" hidden="true" class="score option"><%= book.score %></option>
+            <% }) %>
+        </select>
+    
+        <button type="submit"><i class="ri-search-2-line"></i></button>
+    </form>
+</div>
+
+<script>
+    function changeValues (filter) {
+        const options = document.querySelectorAll('.option');
+
+        options.forEach((option) => {
+            if ( option.className.includes(filter.value.toLowerCase()) ) {
+                option.removeAttribute('hidden');
+            } else {
+                option.setAttribute('hidden', true);
+            }
+        })
+    }
+</script>

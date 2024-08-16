@@ -1,0 +1,45 @@
+.filter-box .overlay{
+    position: fixed;
+    top: 0px;
+    left: 0px;
+
+    width: 100vw;
+    height: 100vh;
+
+    background-color: rgba(0, 0, 0, 0.7);
+
+    z-index: 1;
+}
+
+.filter-box .filter-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    width: 20rem;
+
+    background: white;
+
+    border: 1px solid black;
+    border-radius: 0.3rem;
+    padding: 1rem 2rem;
+
+    z-index: 2;
+}
+
+.filter-container select {
+    width: 10rem;
+    height: 2rem;
+
+    border-radius: 0.3rem;
+}
+
+.filter-container select:hover{
+    cursor: pointer;
+}
